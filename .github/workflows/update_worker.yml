@@ -3,7 +3,7 @@ name: Daily Sync _worker.js, LICENSE, and README.md from ImLTHQ/edgetunnel
 on:
   schedule:
     - cron: '0 0 * * *'  # 每天 UTC 零点运行
-  workflow_dispatch:      # 支持手动触发
+  workflow_dispatch:
 
 jobs:
   sync-worker:
@@ -34,13 +34,15 @@ jobs:
             echo "need_update=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: 同步 src.js 为 _worker.js、LICENSE、README.md，并更新 version.txt
+      - name: 同步 _worker.js、LICENSE 和 README.md（如存在）
         if: steps.check_update.outputs.need_update == 'true'
         run: |
           git clone --depth=1 https://github.com/ImLTHQ/edgetunnel.git upstream_repo
           cp upstream_repo/src.js _worker.js
-          cp upstream_repo/LICENSE LICENSE
-          cp upstream_repo/README.md README.md
+          cp upstream_repo/LICENSE LICENSE || true
+          if [ -f upstream_repo/README.md ]; then cp upstream_repo/README.md README.md; fi
+          if [ -f upstream_repo/readme.md ]; then cp upstream_repo/readme.md README.md; fi
+          if [ -f upstream_repo/README.MD ]; then cp upstream_repo/README.MD README.md; fi
           cp upstream_sha.txt version.txt
           echo "updated=true" >> $GITHUB_ENV
 
@@ -49,6 +51,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add _worker.js LICENSE README.md version.txt
-          git commit -m "自动同步 _worker.js、LICENSE 和 README.md，上游版本 $(cat version.txt)"
+          git add _worker.js LICENSE README.md version.txt || true
+          git commit -m "自动同步 _worker.js、LICENSE、README.md（如存在），上游版本 $(cat version.txt)" || echo "没有文件需要提交"
           git push
