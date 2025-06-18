@@ -34,26 +34,45 @@ jobs:
             echo "need_update=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: 同步 _worker.js、LICENSE 和 README.md（如存在）
+      - name: 同步必要文件
         if: steps.check_update.outputs.need_update == 'true'
         run: |
           git clone --depth=1 https://github.com/ImLTHQ/edgetunnel.git upstream_repo
-          cp upstream_repo/_worker.js _worker.js
-          [ -f upstream_repo/LICENSE ] && cp upstream_repo/LICENSE LICENSE
+
+          updated=false
+
+          # 比较 _worker.js
+          if ! cmp -s upstream_repo/_worker.js _worker.js; then
+            cp upstream_repo/_worker.js _worker.js
+            updated=true
+          fi
+
+          # 比较 LICENSE
+          if [ -f upstream_repo/LICENSE ] && ! cmp -s upstream_repo/LICENSE LICENSE; then
+            cp upstream_repo/LICENSE LICENSE
+            updated=true
+          fi
+
+          # 比较 README.md（只在有变更时更新）
           for name in README.md readme.md README.MD; do
             if [ -f "upstream_repo/$name" ]; then
-              cp "upstream_repo/$name" README.md
+              if [ ! -f README.md ] || ! cmp -s "upstream_repo/$name" README.md; then
+                cp "upstream_repo/$name" README.md
+                updated=true
+              fi
               break
             fi
           done
+
           cp upstream_sha.txt version.txt
-          echo "updated=true" >> $GITHUB_ENV
+
+          echo "updated=$updated" >> $GITHUB_ENV
 
       - name: 提交并推送变更
         if: env.updated == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add _worker.js LICENSE README.md version.txt || true
-          git commit -m "自动同步 _worker.js、LICENSE、README.md（如存在），上游版本 $(cat version.txt)" || echo "没有文件需要提交"
+          git add _worker.js LICENSE README.md version.txt
+          git commit -m "自动同步 _worker.js、LICENSE、README.md（如有变更），上游版本 $(cat version.txt)" || echo "没有文件需要提交"
           git push
