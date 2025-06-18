@@ -42,7 +42,7 @@ jobs:
           updated=false
 
           # 比较 _worker.js
-          if ! cmp -s upstream_repo/_worker.js _worker.js; then
+          if ! cmp -s upstream_repo/src.js _worker.js; then
             cp upstream_repo/src.js _worker.js
             updated=true
           fi
