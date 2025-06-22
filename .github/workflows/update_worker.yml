@@ -3,7 +3,7 @@ name: Daily Sync _worker.js, LICENSE, and README.md from ImLTHQ/edgetunnel
 on:
   schedule:
     - cron: '0 0 * * *'  # 每天 UTC 零点运行
-  workflow_dispatch:      # 允许手动触发
+  workflow_dispatch:
 
 jobs:
   sync-worker:
@@ -16,22 +16,22 @@ jobs:
       - name: 获取上游最新 commit SHA
         id: get_sha
         run: |
-          curl -s https://api.github.com/repos/ImLTHQ/edgetunnel/commits/main \
-            | grep '"sha"' | head -n 1 | cut -d '"' -f 4 > upstream_sha.txt
-          echo "sha=$(cat upstream_sha.txt)" >> $GITHUB_OUTPUT
+          SHA=$(curl -s https://api.github.com/repos/ImLTHQ/edgetunnel/commits/main | grep '"sha"' | head -n 1 | cut -d '"' -f 4)
+          echo "$SHA" > upstream_sha.txt
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
 
       - name: 检查是否需要更新
         id: check_update
         run: |
           if [ ! -f version.txt ]; then
             echo "首次运行，需更新"
-            echo "need_update=true" >> $GITHUB_OUTPUT
+            echo "need_update=true" >> "$GITHUB_OUTPUT"
           elif ! cmp -s upstream_sha.txt version.txt; then
             echo "上游有新版本，需更新"
-            echo "need_update=true" >> $GITHUB_OUTPUT
+            echo "need_update=true" >> "$GITHUB_OUTPUT"
           else
             echo "版本未变，无需更新"
-            echo "need_update=false" >> $GITHUB_OUTPUT
+            echo "need_update=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: 同步必要文件
@@ -41,19 +41,19 @@ jobs:
 
           updated=false
 
-          # 比较 _worker.js
+          # _worker.js
           if ! cmp -s upstream_repo/_worker.js _worker.js; then
             cp upstream_repo/_worker.js _worker.js
             updated=true
           fi
 
-          # 比较 LICENSE
+          # LICENSE
           if [ -f upstream_repo/LICENSE ] && ! cmp -s upstream_repo/LICENSE LICENSE; then
             cp upstream_repo/LICENSE LICENSE
             updated=true
           fi
 
-          # 比较 README.md（只在有变更时更新）
+          # README（支持大小写）
           for name in README.md readme.md README.MD; do
             if [ -f "upstream_repo/$name" ]; then
               if [ ! -f README.md ] || ! cmp -s "upstream_repo/$name" README.md; then
@@ -64,9 +64,10 @@ jobs:
             fi
           done
 
+          # 保存 SHA 到 version.txt
           cp upstream_sha.txt version.txt
 
-          echo "updated=$updated" >> $GITHUB_ENV
+          echo "updated=$updated" >> "$GITHUB_ENV"
 
       - name: 提交并推送变更
         if: env.updated == 'true'
@@ -74,5 +75,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add _worker.js LICENSE README.md version.txt
-          git commit -m "自动同步 _worker.js、LICENSE、README.md（如有变更），上游版本 $(cat version.txt)" || echo "没有文件需要提交"
+          git commit -m "chore: sync from upstream, SHA $(cat version.txt)" || echo "没有文件需要提交"
           git push
