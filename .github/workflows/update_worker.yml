@@ -1,13 +1,15 @@
-name: Daily Sync _worker.js, LICENSE, and README.md from ImLTHQ/edgetunnel
+name: Daily Sync + Obfuscate src.js
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每天 UTC 零点运行
+    - cron: '0 0 * * *'  # 每天 UTC 零点
   workflow_dispatch:
 
 jobs:
-  sync-worker:
+  sync_and_obfuscate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: 检出当前仓库代码
@@ -16,7 +18,7 @@ jobs:
       - name: 获取上游最新 commit SHA
         id: get_sha
         run: |
-          SHA=$(curl -s https://api.github.com/repos/ImLTHQ/edgetunnel/commits/main | grep '"sha"' | head -n 1 | cut -d '"' -f 4)
+          SHA=$(curl -s https://api.github.com/repos/onlyno999/edgetunnel-tianshu/commits/main | grep '"sha"' | head -n 1 | cut -d '"' -f 4)
           echo "$SHA" > upstream_sha.txt
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
 
@@ -34,17 +36,21 @@ jobs:
             echo "need_update=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 同步必要文件
+      - name: 同步并准备 src.js
         if: steps.check_update.outputs.need_update == 'true'
         run: |
-          git clone --depth=1 https://github.com/ImLTHQ/edgetunnel.git upstream_repo
+          git clone --depth=1 https://github.com/onlyno999/edgetunnel-tianshu.git upstream_repo
 
           updated=false
 
-          # _worker.js
-          if ! cmp -s upstream_repo/_worker.js _worker.js; then
-            cp upstream_repo/_worker.js _worker.js
-            updated=true
+          if [ -f upstream_repo/src.js ]; then
+            if ! cmp -s upstream_repo/src.js src.js; then
+              cp upstream_repo/src.js src.js
+              updated=true
+            fi
+          else
+            echo "❌ 上游没有 src.js 文件"
+            exit 1
           fi
 
           # LICENSE
@@ -53,7 +59,7 @@ jobs:
             updated=true
           fi
 
-          # README（支持大小写）
+          # README.md
           for name in README.md readme.md README.MD; do
             if [ -f "upstream_repo/$name" ]; then
               if [ ! -f README.md ] || ! cmp -s "upstream_repo/$name" README.md; then
@@ -64,16 +70,34 @@ jobs:
             fi
           done
 
-          # 保存 SHA 到 version.txt
+          # 保存 SHA
           cp upstream_sha.txt version.txt
 
           echo "updated=$updated" >> "$GITHUB_ENV"
 
-      - name: 提交并推送变更
+      - name: 设置 Node.js 环境
+        if: env.updated == 'true'
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: 安装混淆工具
+        if: env.updated == 'true'
+        run: npm install -g javascript-obfuscator
+
+      - name: 混淆生成 _worker.js
+        if: env.updated == 'true'
+        run: |
+          javascript-obfuscator src.js --output _worker.js \
+          --compact true \
+          --identifier-names-generator mangled \
+          --rename-globals true
+
+      - name: 提交并推送
         if: env.updated == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add _worker.js LICENSE README.md version.txt
-          git commit -m "chore: sync from upstream, SHA $(cat version.txt)" || echo "没有文件需要提交"
+          git add src.js _worker.js LICENSE README.md version.txt
+          git commit -m "chore: sync + obfuscate from upstream SHA $(cat version.txt)" || echo "没有文件需要提交"
           git push
