@@ -22,71 +22,50 @@ jobs:
           echo "$SHA" > upstream_sha.txt
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
 
-      - name: 检查是否需要更新
+      - name: 判断是否需要更新
         id: check_update
         run: |
           if [ ! -f version.txt ]; then
             echo "首次运行，需更新"
             echo "need_update=true" >> "$GITHUB_OUTPUT"
           elif ! cmp -s upstream_sha.txt version.txt; then
-            echo "上游有新版本，需更新"
+            echo "SHA 不匹配，需更新"
             echo "need_update=true" >> "$GITHUB_OUTPUT"
           else
-            echo "版本未变，无需更新"
+            echo "SHA 匹配，无需更新"
             echo "need_update=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 同步并准备 src.js
+      - name: 拉取上游并同步文件
         if: steps.check_update.outputs.need_update == 'true'
         run: |
           git clone --depth=1 https://github.com/onlyno999/edgetunnel-tianshu.git upstream_repo
 
-          updated=false
+          cp upstream_repo/src.js src.js
+          cp upstream_repo/LICENSE LICENSE || true
 
-          if [ -f upstream_repo/src.js ]; then
-            if ! cmp -s upstream_repo/src.js src.js; then
-              cp upstream_repo/src.js src.js
-              updated=true
-            fi
-          else
-            echo "❌ 上游没有 src.js 文件"
-            exit 1
-          fi
-
-          # LICENSE
-          if [ -f upstream_repo/LICENSE ] && ! cmp -s upstream_repo/LICENSE LICENSE; then
-            cp upstream_repo/LICENSE LICENSE
-            updated=true
-          fi
-
-          # README.md
+          # 处理 README
           for name in README.md readme.md README.MD; do
             if [ -f "upstream_repo/$name" ]; then
-              if [ ! -f README.md ] || ! cmp -s "upstream_repo/$name" README.md; then
-                cp "upstream_repo/$name" README.md
-                updated=true
-              fi
+              cp "upstream_repo/$name" README.md
               break
             fi
           done
 
-          # 保存 SHA
           cp upstream_sha.txt version.txt
 
-          echo "updated=$updated" >> "$GITHUB_ENV"
-
       - name: 设置 Node.js 环境
-        if: env.updated == 'true'
+        if: steps.check_update.outputs.need_update == 'true'
         uses: actions/setup-node@v3
         with:
           node-version: "16"
 
       - name: 安装混淆工具
-        if: env.updated == 'true'
+        if: steps.check_update.outputs.need_update == 'true'
         run: npm install -g javascript-obfuscator
 
-      - name: 混淆生成 _worker.js
-        if: env.updated == 'true'
+      - name: 混淆 src.js 到 _worker.js
+        if: steps.check_update.outputs.need_update == 'true'
         run: |
           javascript-obfuscator src.js --output _worker.js \
           --compact true \
@@ -94,7 +73,7 @@ jobs:
           --rename-globals true
 
       - name: 提交并推送
-        if: env.updated == 'true'
+        if: steps.check_update.outputs.need_update == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
