@@ -13,7 +13,7 @@ let SOCKS5全局代理 = false;
 
 let 反代IP = "ts.hpc.tw";
 
-let NAT64前缀 = "2001:67c:2960:6464::";
+let NAT64前缀 = "2a00:1098:2c::1";
 let DOH地址 = "1.1.1.1";
 
 // 网页入口
