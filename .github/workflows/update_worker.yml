@@ -34,6 +34,7 @@ jobs:
           else
             echo "SHA 匹配，无需更新"
             echo "need_update=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: 下载 _worker.js
         if: steps.check_update.outputs.need_update == 'true'
