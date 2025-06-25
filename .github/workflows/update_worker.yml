@@ -1,4 +1,4 @@
-name: Daily Sync + Obfuscate src.js
+name: Daily Sync src.js (No Obfuscation)
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  sync_and_obfuscate:
+  sync_upstream:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -18,7 +18,7 @@ jobs:
       - name: 获取上游最新 commit SHA
         id: get_sha
         run: |
-          SHA=$(curl -s https://api.github.com/repos/ImLTHQ/edgetunnel-tianshu/commits/main | grep '"sha"' | head -n 1 | cut -d '"' -f 4)
+          SHA=$(curl -s https://api.github.com/repos/ImLTHQ/edgetunnel-tianshu/commits/main | jq -r .sha)
           echo "$SHA" > upstream_sha.txt
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
 
@@ -41,7 +41,7 @@ jobs:
         run: |
           git clone --depth=1 https://github.com/ImLTHQ/edgetunnel.git upstream_repo
 
-          cp upstream_repo/src.js src.js
+          cp upstream_repo/_worker.js _worker.js
           cp upstream_repo/LICENSE LICENSE || true
 
           # 处理 README
@@ -54,29 +54,11 @@ jobs:
 
           cp upstream_sha.txt version.txt
 
-      - name: 设置 Node.js 环境
-        if: steps.check_update.outputs.need_update == 'true'
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-
-      - name: 安装混淆工具
-        if: steps.check_update.outputs.need_update == 'true'
-        run: npm install -g javascript-obfuscator
-
-      - name: 混淆 src.js 到 _worker.js
-        if: steps.check_update.outputs.need_update == 'true'
-        run: |
-          javascript-obfuscator src.js --output _worker.js \
-          --compact true \
-          --identifier-names-generator mangled \
-          --rename-globals true
-
       - name: 提交并推送
         if: steps.check_update.outputs.need_update == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add src.js _worker.js LICENSE README.md version.txt
-          git commit -m "chore: sync + obfuscate from upstream SHA $(cat version.txt)" || echo "没有文件需要提交"
+          git add src.js LICENSE README.md version.txt
+          git commit -m "chore: sync from upstream SHA $(cat version.txt)" || echo "没有文件需要提交"
           git push
