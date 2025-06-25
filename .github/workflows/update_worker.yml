@@ -1,28 +1,28 @@
-name: Daily Sync _worker.js (No Obfuscation)
+name: Daily Sync _worker.js from upstream
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每天 UTC 零点
+    - cron: '0 0 * * *'  # 每天 UTC 零点运行
   workflow_dispatch:
 
 jobs:
-  sync_upstream:
+  sync_worker:
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: 检出当前仓库代码
+      - name: 检出当前仓库
         uses: actions/checkout@v3
 
-      - name: 获取上游最新 commit SHA
+      - name: 获取上游最新 SHA
         id: get_sha
         run: |
-          SHA=$(curl -s https://api.github.com/repos/ImLTHQ/edgetunnel-tianshu/commits/main | jq -r .sha)
+          SHA=$(curl -s https://api.github.com/repos/ImLTHQ/edgetunnel-tianshu/commits/main | grep '"sha"' | head -n 1 | cut -d '"' -f 4)
           echo "$SHA" > upstream_sha.txt
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
 
-      - name: 判断是否需要更新
+      - name: 检查是否需要更新
         id: check_update
         run: |
           if [ ! -f version.txt ]; then
@@ -34,31 +34,18 @@ jobs:
           else
             echo "SHA 匹配，无需更新"
             echo "need_update=false" >> "$GITHUB_OUTPUT"
-          fi
 
-      - name: 拉取上游并同步文件
+      - name: 下载 _worker.js
         if: steps.check_update.outputs.need_update == 'true'
         run: |
-          git clone --depth=1 https://github.com/ImLTHQ/edgetunnel.git upstream_repo
-
-          cp upstream_repo/_worker.js _worker.js
-          cp upstream_repo/LICENSE LICENSE || true
-
-          # 处理 README
-          for name in README.md readme.md README.MD; do
-            if [ -f "upstream_repo/$name" ]; then
-              cp "upstream_repo/$name" README.md
-              break
-            fi
-          done
-
+          curl -sL https://raw.githubusercontent.com/ImLTHQ/edgetunnel-tianshu/main/_worker.js -o _worker.js
           cp upstream_sha.txt version.txt
 
-      - name: 提交并推送
+      - name: 提交更新
         if: steps.check_update.outputs.need_update == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add src.js LICENSE README.md version.txt
-          git commit -m "chore: sync from upstream SHA $(cat version.txt)" || echo "没有文件需要提交"
+          git add _worker.js version.txt
+          git commit -m "chore: sync _worker.js from upstream SHA $(cat version.txt)" || echo "无变更可提交"
           git push
