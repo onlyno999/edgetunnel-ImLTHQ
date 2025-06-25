@@ -18,7 +18,7 @@ jobs:
       - name: 获取上游最新 commit SHA
         id: get_sha
         run: |
-          SHA=$(curl -s https://api.github.com/repos/onlyno999/edgetunnel-tianshu/commits/main | grep '"sha"' | head -n 1 | cut -d '"' -f 4)
+          SHA=$(curl -s https://api.github.com/repos/ImLTHQ/edgetunnel-tianshu/commits/main | grep '"sha"' | head -n 1 | cut -d '"' -f 4)
           echo "$SHA" > upstream_sha.txt
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
 
@@ -39,7 +39,7 @@ jobs:
       - name: 拉取上游并同步文件
         if: steps.check_update.outputs.need_update == 'true'
         run: |
-          git clone --depth=1 https://github.com/onlyno999/edgetunnel-tianshu.git upstream_repo
+          git clone --depth=1 https://github.com/ImLTHQ/edgetunnel.git upstream_repo
 
           cp upstream_repo/src.js src.js
           cp upstream_repo/LICENSE LICENSE || true
