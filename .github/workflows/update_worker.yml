@@ -1,4 +1,4 @@
-name: Daily Sync src.js (No Obfuscation)
+name: Daily Sync _worker.js (No Obfuscation)
 
 on:
   schedule:
