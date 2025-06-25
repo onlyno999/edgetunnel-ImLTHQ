@@ -1,1 +1,494 @@
-const a0D=a0b;(function(a,b){const C=a0b,c=a();while(!![]){try{const d=-parseInt(C(0x236))/0x1*(-parseInt(C(0x223))/0x2)+-parseInt(C(0x206))/0x3*(parseInt(C(0x23a))/0x4)+-parseInt(C(0x204))/0x5+parseInt(C(0x1e5))/0x6+-parseInt(C(0x1eb))/0x7*(parseInt(C(0x20f))/0x8)+-parseInt(C(0x23f))/0x9*(-parseInt(C(0x224))/0xa)+-parseInt(C(0x240))/0xb*(-parseInt(C(0x22a))/0xc);if(d===b)break;else c['push'](c['shift']());}catch(e){c['push'](c['shift']());}}}(a0a,0xe2fae));import{connect}from'cloudflare:sockets';let a0c=a0D(0x20d),a0d,a0e=a0D(0x238),a0f=[],a0g=![],a0h=![],a0i='ts.hpc.tw',a0j=a0D(0x1e6),a0k=a0D(0x230);export default{async 'fetch'(a,b){const E=a0D;a0c=b[E(0x222)]??a0c,a0d=a0v(),a0e=b[E(0x231)]??a0e,a0g=b['SOCKS5']??a0g,a0h=b[E(0x202)]??a0h,a0i=b[E(0x1f6)]??a0i,a0j=b['NAT64']??a0j,a0k=b[E(0x21e)]??a0k;const c=new URL(a[E(0x23b)]),d=a[E(0x1ee)][E(0x1ea)](E(0x225)),e=d==E(0x1f0),f=d?.[E(0x21a)]()!==E(0x1f0),g='/'+encodeURIComponent(a0c)+'/';if(c[E(0x211)][E(0x1fa)](g)){let h=decodeURIComponent(c[E(0x211)][E(0x229)](g[E(0x1f4)]));try{const j=new Request(h+c[E(0x214)],{'method':a[E(0x1e8)],'headers':a[E(0x1ee)],'body':a[E(0x20e)]}),k=await fetch(j);return k;}catch{return new Response(null,{'status':0x194});}}if(f){if(c[E(0x211)]=='/'+encodeURIComponent(a0c)){const l=a[E(0x1ee)][E(0x1ea)](E(0x20a))[E(0x21a)](),m={'v2ray':a0z,'clash':a0A,'tips':a0w},n=Object[E(0x1fd)](m)['find'](p=>l[E(0x232)](p));a0f=await a0x();const o=m[n||E(0x220)];return o(a[E(0x1ee)][E(0x1ea)](E(0x1fb)));}else return new Response(null,{'status':0x194});}if(e)return await a0l(a);}};async function a0l(a){const F=a0D,[b,c]=new WebSocketPair(),d=a[F(0x1ee)][F(0x1ea)](F(0x22b)),e=a0m(d);return await a0n(e,c),new Response(null,{'status':0x65,'webSocket':b});}function a0m(a){const G=a0D;a=a[G(0x203)](/-/g,'+')['replace'](/_/g,'/');const b=atob(a),c=Uint8Array[G(0x218)](b,d=>d['charCodeAt'](0x0));return c[G(0x210)];}async function a0n(a,b,c){const H=a0D;if(a0q(new Uint8Array(a[H(0x229)](0x1,0x11)))!==a0d)return null;const d=new Uint8Array(a)[0x11],e=0x12+d+0x1,f=a[H(0x229)](e,e+0x2),g=new DataView(f)[H(0x1fe)](0x0),h=e+0x2,j=new Uint8Array(a[H(0x229)](h,h+0x1)),k=j[0x0];let l=0x0,m='',n=h+0x1;switch(k){case 0x1:l=0x4,m=new Uint8Array(a[H(0x229)](n,n+l))[H(0x22d)]('.');break;case 0x2:l=new Uint8Array(a[H(0x229)](n,n+0x1))[0x0],n+=0x1,m=new TextDecoder()[H(0x1f2)](a[H(0x229)](n,n+l));break;case 0x3:l=0x10;const p=new DataView(a[H(0x229)](n,n+l)),q=[];for(let r=0x0;r<0x8;r++){q[H(0x23e)](p[H(0x1fe)](r*0x2)[H(0x21b)](0x10));}m=q[H(0x22d)](':');break;}const o=a['slice'](n+l);if(a0h&&a0g)c=await a0t(k,m,g),await c[H(0x1e7)];else try{c=await connect({'hostname':m,'port':g,'allowHalfOpen':!![]}),await c[H(0x1e7)];}catch{if(a0g)try{c=await a0t(k,m,g),await c['opened'];}catch{try{const s=k===0x1?a0o(m):a0o(await a0p(m));c=await connect({'hostname':s,'port':g}),await c[H(0x1e7)];}catch{let [t,u]=a0i['split'](':');c=await connect({'hostname':t,'port':u||0x1bb}),await c[H(0x1e7)];}}else try{const v=k===0x1?a0o(m):a0o(await a0p(m));c=await connect({'hostname':v,'port':g}),await c[H(0x1e7)];}catch{let [w,x]=a0i[H(0x216)](':');c=await connect({'hostname':w,'port':x||0x1bb}),await c['opened'];}}a0s(b,c,o);}function a0o(a){const I=a0D,b=a[I(0x216)]('.')[I(0x234)](c=>(+c)['toString'](0x10)[I(0x209)](0x2,'0'));return'['+a0j+b[0x0]+b[0x1]+':'+b[0x2]+b[0x3]+']';}async function a0p(a){const J=a0D,{Answer:b}=await(await fetch('https://'+a0k+J(0x205)+a+J(0x219),{'headers':{'Accept':'application/dns-json'}}))['json']();return b[J(0x233)](({type:c})=>c===0x1)['data'];}function a0q(a,b=0x0){const K=a0D,c=(a0r[a[b+0x0]]+a0r[a[b+0x1]]+a0r[a[b+0x2]]+a0r[a[b+0x3]]+'-'+a0r[a[b+0x4]]+a0r[a[b+0x5]]+'-'+a0r[a[b+0x6]]+a0r[a[b+0x7]]+'-'+a0r[a[b+0x8]]+a0r[a[b+0x9]]+'-'+a0r[a[b+0xa]]+a0r[a[b+0xb]]+a0r[a[b+0xc]]+a0r[a[b+0xd]]+a0r[a[b+0xe]]+a0r[a[b+0xf]])[K(0x21a)]();return c;}const a0r=[];for(let a0B=0x0;a0B<0x100;++a0B){a0r[a0D(0x23e)]((a0B+0x100)[a0D(0x21b)](0x10)['slice'](0x1));}async function a0s(a,b,c){const L=a0D;a['accept'](),await a['send'](new Uint8Array([0x0,0x0])[L(0x210)]);const d=b[L(0x1ff)]['getWriter'](),e=b[L(0x217)][L(0x235)]();if(c)await d[L(0x1f8)](c);a['addEventListener']('message',async g=>{await d['write'](g['data']);}),f(),((async()=>{const M=L;while(!![]){const {value:g,done:h}=await e[M(0x1f7)]();if(h)break;if(g)await a[M(0x226)](g);}})());async function f(){const N=L;while(!![]){await new Promise(g=>setTimeout(g,0x2710)),d[N(0x1f8)](new Uint8Array(0x0)),a[N(0x226)]('');}}}function a0b(a,b){const c=a0a();return a0b=function(d,e){d=d-0x1e5;let f=c[d];return f;},a0b(a,b);}async function a0t(a,b,c){const O=a0D,{username:d,password:e,hostname:f,port:g}=await a0u(a0g),h=connect({'hostname':f,'port':g});try{await h[O(0x1e7)];}catch{return new Response(O(0x1e9),{'status':0x190});}const j=h[O(0x1ff)][O(0x212)](),k=h[O(0x217)][O(0x235)](),l=new TextEncoder(),m=new Uint8Array([0x5,0x2,0x0,0x2]);await j['write'](m);let n=(await k[O(0x1f7)]())[O(0x1f3)];if(n[0x1]===0x2){if(!d||!e)return q();const r=new Uint8Array([0x1,d[O(0x1f4)],...l[O(0x207)](d),e[O(0x1f4)],...l[O(0x207)](e)]);await j[O(0x1f8)](r),n=(await k[O(0x1f7)]())[O(0x1f3)];if(n[0x0]!==0x1||n[0x1]!==0x0)return q();}let o;switch(a){case 0x1:o=new Uint8Array([0x1,...b[O(0x216)]('.')[O(0x234)](Number)]);break;case 0x2:o=new Uint8Array([0x3,b[O(0x1f4)],...l[O(0x207)](b)]);break;case 0x3:o=new Uint8Array([0x4,...b['split'](':')[O(0x201)](s=>[parseInt(s['slice'](0x0,0x2),0x10),parseInt(s[O(0x229)](0x2),0x10)])]);break;default:return q();}const p=new Uint8Array([0x5,0x1,0x0,...o,c>>0x8,c&0xff]);await j[O(0x1f8)](p),n=(await k['read']())[O(0x1f3)];if(n[0x0]!==0x5||n[0x1]!==0x0)return q();j['releaseLock'](),k[O(0x23c)]();return h;function q(){const P=O;return j[P(0x23c)](),k[P(0x23c)](),h[P(0x23d)](),new Response(P(0x22c),{'status':0x190});}}async function a0u(a){const Q=a0D,[b,c]=a['split']('@')[Q(0x1ed)]();let d,e,f,g;if(c){const j=c['split'](':');d=j[0x0],e=j[0x1];}const h=b['split'](':');return g=Number(h[Q(0x221)]()),f=h['join'](':'),{'username':d,'password':e,'hostname':f,'port':g};}function a0v(){const R=a0D,a=Array[R(0x218)](new TextEncoder()[R(0x207)](a0c))[R(0x234)](d=>d[R(0x21b)](0x10)[R(0x209)](0x2,'0'))['join']('')['slice'](0x0,0x14)['padEnd'](0x14,'0'),b=a[R(0x229)](0x0,0x8),c=a[R(0x229)](-0xc);return b+'-0000-4000-8000-'+c;}async function a0w(){const S=a0D,a=S(0x237)+a0c+S(0x1f9);return new Response(a,{'status':0xc8,'headers':{'Content-Type':S(0x239)}});}async function a0x(){const T=a0D;if(a0e){const a=await fetch(a0e),b=await a['text']();return b[T(0x216)]('\x0a')['map'](c=>c[T(0x200)]())[T(0x20b)](c=>c);}return[];}function a0a(){const a1=['SOCKS5握手失败','join','\x0a\x20\x20udp:\x20true\x0a\x20\x20tls:\x20true\x0a\x20\x20sni:\x20','?encryption=none&security=tls&sni=','1.1.1.1','TXT_URL','includes','find','map','getReader','72595SqfVvK','\x0a<title>订阅-','https://raw.githubusercontent.com/ImLTHQ/edgetunnel/main/AutoTest.txt','text/html;charset=utf-8','44isojys','url','releaseLock','close','push','3339eONmXf','154NaEwYA','-\x20name:\x20','\x0a-\x20name:\x20延迟优选\x0a\x20\x20type:\x20url-test\x0a\x20\x20url:\x20https://www.google.com/generate_204\x0a\x20\x20interval:\x2030\x0a\x20\x20tolerance:\x2050\x0a\x20\x20proxies:\x0a','6341142SLdCbr','2001:67c:2960:6464::','opened','method','SOCKS5未连通','get','221865SRdhpU','#原生节点','reverse','headers','\x0a-\x20name:\x20广告屏蔽\x0a\x20\x20type:\x20select\x0a\x20\x20proxies:\x0a\x20\x20\x20\x20-\x20REJECT\x0a\x20\x20\x20\x20-\x20DIRECT\x0a\x20\x20\x20\x20-\x20延迟优选\x0a\x20\x20\x20\x20-\x20故障转移\x0a','websocket','\x0a-\x20name:\x20故障转移\x0a\x20\x20type:\x20fallback\x0a\x20\x20url:\x20https://www.google.com/generate_204\x0a\x20\x20interval:\x2030\x0a\x20\x20proxies:\x0a','decode','value','length','\x0a\x20\x20uuid:\x20','PROXY_IP','read','write','</title>\x0a<style>\x0a\x20\x20body\x20{\x0a\x20\x20\x20\x20font-size:\x2025px;\x0a\x20\x20\x20\x20text-align:\x20center;\x0a\x20\x20}\x0a</style>\x0a<strong>请把链接导入\x20Clash\x20或\x20V2Ray</strong>\x0a','startsWith','Host','/?ed=2560','keys','getUint16','writable','trim','flatMap','SOCKS5_GLOBAL','replace','6712865sgMWsU','/dns-query?name=','163557cfBWhX','encode','节点\x20','padStart','User-Agent','filter','\x0aproxies:\x0a','订阅路径','body','64LHmUeN','buffer','pathname','getWriter','\x0a-\x20name:\x20国内规则\x0a\x20\x20type:\x20select\x0a\x20\x20proxies:\x0a\x20\x20\x20\x20-\x20DIRECT\x0a\x20\x20\x20\x20-\x20延迟优选\x0a\x20\x20\x20\x20-\x20故障转移\x0a\x20\x20\x20\x20-\x20REJECT\x0a','search','proxyConfig','split','readable','from','&type=A','toLowerCase','toString','&fp=chrome&type=ws&host=','\x0a\x0arules:\x0a\x20\x20-\x20GEOSITE,category-ads-all,广告屏蔽\x0a\x20\x20-\x20GEOSITE,cn,国内规则\x0a\x20\x20-\x20GEOIP,CN,国内规则,no-resolve\x0a\x20\x20-\x20MATCH,海外规则\x0a','DOH','text/plain;charset=utf-8','tips','pop','SUB_PATH','8PyXCgV','36430UEmSQw','Upgrade','send','\x0a\x20\x20network:\x20ws\x0a\x20\x20ws-opts:\x0a\x20\x20\x20\x20path:\x20\x22/?ed=2560\x22\x0a\x20\x20\x20\x20headers:\x0a\x20\x20\x20\x20\x20\x20Host:\x20','\x0a\x20\x20\x20\x20\x20\x20User-Agent:\x20Chrome','slice','365796mBaSTr','sec-websocket-protocol'];a0a=function(){return a1;};return a0a();}function a0y(a,b){const U=a0D;return a['unshift'](b+U(0x1ec)),a[U(0x234)]((c,d)=>{const V=U,[e,f=V(0x208)+(d+0x1)]=c['split']('#'),g=e[V(0x216)](':'),h=g[V(0x1f4)]>0x1?Number(g[V(0x221)]()):0x1bb,j=g['join'](':');return{'地址':j,'端口':h,'节点名字':f};});}function a0z(a){const W=a0D,b=a0y(a0f,a),c=b[W(0x234)](({地址:d,端口:e,节点名字:f})=>{const X=W;return'vless://'+a0d+'@'+d+':'+e+X(0x22f)+a+X(0x21c)+a+'&path='+encodeURIComponent(X(0x1fc))+'#'+f;})[W(0x22d)]('\x0a');return new Response(c,{'status':0xc8,'headers':{'Content-Type':W(0x21f)}});}function a0A(a){const a0=a0D,b=a0y(a0f,a),c=g=>{const Y=a0b;return g[Y(0x234)](({地址:h,端口:j,节点名字:k})=>{const Z=Y;return{'nodeConfig':Z(0x241)+k+'\x0a\x20\x20type:\x20vless\x0a\x20\x20server:\x20'+h+'\x0a\x20\x20port:\x20'+j+Z(0x1f5)+a0d+Z(0x22e)+a+Z(0x227)+a+Z(0x228),'proxyConfig':'\x20\x20\x20\x20-\x20'+k};});},d=c(b)[a0(0x234)](g=>g['nodeConfig'])[a0(0x22d)]('\x0a'),e=c(b)[a0(0x234)](g=>g[a0(0x215)])['join']('\x0a'),f=a0(0x20c)+d+'\x0a\x0aproxy-groups:\x0a-\x20name:\x20海外规则\x0a\x20\x20type:\x20select\x0a\x20\x20proxies:\x0a\x20\x20\x20\x20-\x20延迟优选\x0a\x20\x20\x20\x20-\x20故障转移\x0a\x20\x20\x20\x20-\x20DIRECT\x0a\x20\x20\x20\x20-\x20REJECT\x0a'+e+a0(0x213)+e+a0(0x1ef)+e+a0(0x242)+e+a0(0x1f1)+e+a0(0x21d);return new Response(f,{'status':0xc8,'headers':{'Content-Type':a0(0x21f)}});}
+import { connect } from "cloudflare:sockets";
+
+// 配置区块
+let 订阅路径 = "订阅路径";
+
+let 验证UUID;
+
+let 优选链接 = "https://raw.githubusercontent.com/ImLTHQ/edgetunnel/main/AutoTest.txt";
+let 优选列表 = [];
+
+let SOCKS5代理 = false;
+let SOCKS5全局代理 = false;
+
+let 反代IP = "ts.hpc.tw";
+
+let NAT64前缀 = "2001:67c:2960:6464::";
+let DOH地址 = "1.1.1.1";
+
+// 网页入口
+export default {
+  async fetch(访问请求, env) {
+    订阅路径 = env.SUB_PATH ?? 订阅路径;
+    验证UUID = 生成UUID();
+    优选链接 = env.TXT_URL ?? 优选链接;
+    SOCKS5代理 = env.SOCKS5 ?? SOCKS5代理;
+    SOCKS5全局代理 = env.SOCKS5_GLOBAL ?? SOCKS5全局代理;
+    反代IP = env.PROXY_IP ?? 反代IP;
+    NAT64前缀 = env.NAT64 ?? NAT64前缀;
+    DOH地址 = env.DOH ?? DOH地址;
+
+    const url = new URL(访问请求.url);
+    const 读取我的请求标头 = 访问请求.headers.get("Upgrade");
+    const WS请求 = 读取我的请求标头 == "websocket";
+    const 不是WS请求 = 读取我的请求标头?.toLowerCase() !== "websocket";
+
+    // 只允许 /订阅路径/ 开头的路径反代
+    const 反代前缀 = `/${encodeURIComponent(订阅路径)}/`;
+    if (url.pathname.startsWith(反代前缀)) {
+      // 取出目标链接
+      let target = decodeURIComponent(url.pathname.slice(反代前缀.length));
+      try {
+          const 请求对象 = new Request(target + url.search, {
+            method: 访问请求.method,
+            headers: 访问请求.headers,
+            body: 访问请求.body,
+          });
+          const 响应对象 = await fetch(请求对象);
+          return 响应对象;
+      } catch {
+        return new Response(null, { status: 404 });
+      }
+    }
+
+    if (不是WS请求) {
+      if (url.pathname == `/${encodeURIComponent(订阅路径)}`) {
+        const 用户代理 = 访问请求.headers.get("User-Agent").toLowerCase();
+        const 配置生成器 = {
+          v2ray: v2ray配置文件,
+          clash: clash配置文件,
+          tips: 提示界面,
+        };
+        const 工具 = Object.keys(配置生成器).find((工具) => 用户代理.includes(工具));
+        优选列表 = await 获取优选列表();
+        const 生成配置 = 配置生成器[工具 || "tips"];
+        return 生成配置(访问请求.headers.get("Host"));
+      } else {
+          return new Response(null, { status: 404 });
+      }
+    }
+
+    if (WS请求) {
+      return await 升级WS请求(访问请求);
+    }
+  },
+};
+
+// 脚本主要架构
+// 第一步，读取和构建基础访问结构
+async function 升级WS请求(访问请求) {
+  const [客户端, WS接口] = new WebSocketPair(); //创建WS接口对象
+  const 读取我的加密访问内容数据头 = 访问请求.headers.get('sec-websocket-protocol'); //读取访问标头中的WS通信数据
+  const 解密数据 = 使用64位加解密(读取我的加密访问内容数据头); //解密目标访问数据，传递给TCP握手进程
+  await 解析VL标头(解密数据, WS接口); //解析VL数据并进行TCP握手
+  return new Response(null, { status: 101, webSocket: 客户端 }); //一切准备就绪后，回复客户端WS连接升级成功
+}
+
+function 使用64位加解密(还原混淆字符) {
+  还原混淆字符 = 还原混淆字符.replace(/-/g, "+").replace(/_/g, "/");
+  const 解密数据 = atob(还原混淆字符);
+  const 解密 = Uint8Array.from(解密数据, (c) => c.charCodeAt(0));
+  return 解密.buffer;
+}
+
+// 第二步，解读VL协议数据，创建TCP握手（直连、SOCKS5、反代、NAT64）
+async function 解析VL标头(VL数据, WS接口, TCP接口) {
+  if (验证VL的密钥(new Uint8Array(VL数据.slice(1, 17))) !== 验证UUID) {
+    return null;
+  }
+
+  const 获取数据定位 = new Uint8Array(VL数据)[17];
+  const 提取端口索引 = 18 + 获取数据定位 + 1;
+  const 建立端口缓存 = VL数据.slice(提取端口索引, 提取端口索引 + 2);
+  const 访问端口 = new DataView(建立端口缓存).getUint16(0);
+
+  const 提取地址索引 = 提取端口索引 + 2;
+  const 建立地址缓存 = new Uint8Array(VL数据.slice(提取地址索引, 提取地址索引 + 1));
+  const 识别地址类型 = 建立地址缓存[0];
+
+  let 地址长度 = 0;
+  let 访问地址 = "";
+  let 地址信息索引 = 提取地址索引 + 1;
+
+  switch (识别地址类型) {
+    case 1:
+      地址长度 = 4;
+      访问地址 = new Uint8Array(VL数据.slice(地址信息索引, 地址信息索引 + 地址长度)).join(".");
+      break;
+    case 2:
+      地址长度 = new Uint8Array(VL数据.slice(地址信息索引, 地址信息索引 + 1))[0];
+      地址信息索引 += 1;
+      访问地址 = new TextDecoder().decode(VL数据.slice(地址信息索引, 地址信息索引 + 地址长度));
+      break;
+    case 3:
+      地址长度 = 16;
+      const dataView = new DataView(VL数据.slice(地址信息索引, 地址信息索引 + 地址长度));
+      const ipv6 = [];
+      for (let i = 0; i < 8; i++) {
+        ipv6.push(dataView.getUint16(i * 2).toString(16));
+      }
+      访问地址 = ipv6.join(":");
+      break;
+  }
+
+  const 写入初始数据 = VL数据.slice(地址信息索引 + 地址长度);
+
+  // 优先SOCKS5全局
+  if (SOCKS5全局代理 && SOCKS5代理) {
+    TCP接口 = await 创建SOCKS5接口(识别地址类型, 访问地址, 访问端口);
+    await TCP接口.opened;
+  } else {
+    try {
+      TCP接口 = await connect({ hostname: 访问地址, port: 访问端口, allowHalfOpen: true });
+      await TCP接口.opened;
+    } catch {
+      // 尝试SOCKS5
+      if (SOCKS5代理) {
+        try {
+          TCP接口 = await 创建SOCKS5接口(识别地址类型, 访问地址, 访问端口);
+          await TCP接口.opened;
+        } catch {
+          // SOCKS5失败 尝试NAT64
+          try {
+            const NAT64地址 = 识别地址类型 === 1
+              ? 转换IPv4到NAT64(访问地址)
+              : 转换IPv4到NAT64(await 解析域名到IPv4(访问地址));
+            TCP接口 = await connect({ hostname: NAT64地址, port: 访问端口 });
+            await TCP接口.opened;
+          } catch {
+            // NAT64失败 尝试反代
+            let [反代IP地址, 反代IP端口] = 反代IP.split(":");
+            TCP接口 = await connect({
+              hostname: 反代IP地址,
+              port: 反代IP端口 || 443,
+            });
+            await TCP接口.opened;
+          }
+        }
+      } else {
+        // 没有SOCKS5 尝试NAT64
+        try {
+          const NAT64地址 = 识别地址类型 === 1
+            ? 转换IPv4到NAT64(访问地址)
+            : 转换IPv4到NAT64(await 解析域名到IPv4(访问地址));
+          TCP接口 = await connect({ hostname: NAT64地址, port: 访问端口 });
+          await TCP接口.opened;
+        } catch {
+          // NAT64失败 尝试反代
+          let [反代IP地址, 反代IP端口] = 反代IP.split(":");
+          TCP接口 = await connect({
+            hostname: 反代IP地址,
+            port: 反代IP端口 || 443,
+          });
+          await TCP接口.opened;
+        }
+      }
+    }
+  }
+  建立传输管道(WS接口, TCP接口, 写入初始数据);
+}
+
+// 将IPv4地址转换为NAT64 IPv6地址
+function 转换IPv4到NAT64(ipv4地址) {
+  const 十六进制 = ipv4地址.split(".").map(段 => (+段).toString(16).padStart(2, "0"));
+  return `[${NAT64前缀}${十六进制[0]}${十六进制[1]}:${十六进制[2]}${十六进制[3]}]`;
+}
+
+// 解析域名到IPv4地址
+async function 解析域名到IPv4(域名) {
+  const { Answer } = await (await fetch(`https://${DOH地址}/dns-query?name=${域名}&type=A`, {
+    headers: { "Accept": "application/dns-json" }
+  })).json();
+  return Answer.find(({ type }) => type === 1).data;
+}
+
+function 验证VL的密钥(arr, offset = 0) {
+  const uuid = (
+    转换密钥格式[arr[offset + 0]] +
+    转换密钥格式[arr[offset + 1]] +
+    转换密钥格式[arr[offset + 2]] +
+    转换密钥格式[arr[offset + 3]] +
+    "-" +
+    转换密钥格式[arr[offset + 4]] +
+    转换密钥格式[arr[offset + 5]] +
+    "-" +
+    转换密钥格式[arr[offset + 6]] +
+    转换密钥格式[arr[offset + 7]] +
+    "-" +
+    转换密钥格式[arr[offset + 8]] +
+    转换密钥格式[arr[offset + 9]] +
+    "-" +
+    转换密钥格式[arr[offset + 10]] +
+    转换密钥格式[arr[offset + 11]] +
+    转换密钥格式[arr[offset + 12]] +
+    转换密钥格式[arr[offset + 13]] +
+    转换密钥格式[arr[offset + 14]] +
+    转换密钥格式[arr[offset + 15]]
+  ).toLowerCase();
+  return uuid;
+}
+
+const 转换密钥格式 = [];
+for (let i = 0; i < 256; ++i) {
+  转换密钥格式.push((i + 256).toString(16).slice(1));
+}
+
+// 第三步，创建客户端WS-CF-目标的传输通道并监听状态
+async function 建立传输管道(WS接口, TCP接口, 写入初始数据) {
+  WS接口.accept();
+  await WS接口.send(new Uint8Array([0, 0]).buffer);
+
+  const 传输数据 = TCP接口.writable.getWriter();
+  const 读取数据 = TCP接口.readable.getReader();
+
+  if (写入初始数据) await 传输数据.write(写入初始数据);
+
+  WS接口.addEventListener("message", async (event) => {
+    await 传输数据.write(event.data);
+  });
+  定时双端保活();
+  (async () => {
+    while (true) {
+      const { value: 返回数据, done } = await 读取数据.read();
+      if (done) break;
+      if (返回数据) await WS接口.send(返回数据);
+    }
+  })();
+  async function 定时双端保活() {
+    while (true) {
+      await new Promise(resolve => setTimeout(resolve, 10000));
+      传输数据.write(new Uint8Array(0));
+      WS接口.send('');
+    }
+  }
+}
+
+// SOCKS5部分
+async function 创建SOCKS5接口(识别地址类型, 访问地址, 访问端口) {
+  const { username, password, hostname, port } = await 获取SOCKS5代理(SOCKS5代理);
+  const SOCKS5接口 = connect({ hostname, port });
+  try {
+    await SOCKS5接口.opened;
+  } catch {
+    return new Response("SOCKS5未连通", { status: 400 });
+  }
+  const writer = SOCKS5接口.writable.getWriter();
+  const reader = SOCKS5接口.readable.getReader();
+  const encoder = new TextEncoder();
+  const socksGreeting = new Uint8Array([5, 2, 0, 2]); //支持无认证和用户名/密码认证
+  await writer.write(socksGreeting);
+  let res = (await reader.read()).value;
+  if (res[1] === 0x02) {
+    //用户名/密码认证
+    if (!username || !password) {
+      return 关闭接口并退出();
+    }
+    const authRequest = new Uint8Array([1, username.length, ...encoder.encode(username), password.length, ...encoder.encode(password)]);
+    await writer.write(authRequest);
+    res = (await reader.read()).value;
+    if (res[0] !== 0x01 || res[1] !== 0x00) {
+      return 关闭接口并退出();
+    }
+  }
+  let 转换访问地址;
+  switch (识别地址类型) {
+    case 1: // IPv4
+      转换访问地址 = new Uint8Array([1, ...访问地址.split(".").map(Number)]);
+      break;
+    case 2: // 域名
+      转换访问地址 = new Uint8Array([3, 访问地址.length, ...encoder.encode(访问地址)]);
+      break;
+    case 3: // IPv6
+      转换访问地址 = new Uint8Array([4, ...访问地址.split(":").flatMap((x) => [parseInt(x.slice(0, 2), 16), parseInt(x.slice(2), 16)])]);
+      break;
+    default:
+      return 关闭接口并退出();
+  }
+  const socksRequest = new Uint8Array([5, 1, 0, ...转换访问地址, 访问端口 >> 8, 访问端口 & 0xff]);
+  await writer.write(socksRequest);
+  res = (await reader.read()).value;
+  if (res[0] !== 0x05 || res[1] !== 0x00) {
+    return 关闭接口并退出();
+  }
+  writer.releaseLock();
+  reader.releaseLock();
+  return SOCKS5接口;
+  function 关闭接口并退出() {
+    writer.releaseLock();
+    reader.releaseLock();
+    SOCKS5接口.close();
+    return new Response("SOCKS5握手失败", { status: 400 });
+  }
+}
+async function 获取SOCKS5代理(SOCKS5) {
+  const [latter, former] = SOCKS5.split("@").reverse();
+  let username, password, hostname, port;
+  if (former) {
+    const formers = former.split(":");
+    username = formers[0];
+    password = formers[1];
+  }
+  const latters = latter.split(":");
+  port = Number(latters.pop());
+  hostname = latters.join(":");
+  return { username, password, hostname, port };
+}
+
+// 其它
+function 生成UUID() {
+  const 二十位 = Array.from(new TextEncoder().encode(订阅路径))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("")
+    .slice(0, 20)
+    .padEnd(20, "0");
+
+  const 前八位 = 二十位
+    .slice(0, 8);
+  const 后十二位 = 二十位
+    .slice(-12);
+
+  return `${前八位}-0000-4000-8000-${后十二位}`;
+}
+
+async function 提示界面() {
+  const 提示界面 = `
+<title>订阅-${订阅路径}</title>
+<style>
+  body {
+    font-size: 25px;
+    text-align: center;
+  }
+</style>
+<strong>请把链接导入 Clash 或 V2Ray</strong>
+`;
+
+  return new Response(提示界面, {
+    status: 200,
+    headers: { "Content-Type": "text/html;charset=utf-8" },
+  });
+}
+
+async function 获取优选列表() {
+  if (优选链接) {
+    const 读取优选文本 = await fetch(优选链接);
+    const 转换优选文本 = await 读取优选文本.text();
+    return 转换优选文本
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line);
+  }
+  return [];
+}
+
+function 处理优选列表(优选列表, hostName) {
+  优选列表.unshift(`${hostName}#原生节点`);
+  return 优选列表.map((获取优选, index) => {
+    const [地址端口, 节点名字 = `节点 ${index + 1}`] = 获取优选.split("#");
+    const 拆分地址端口 = 地址端口.split(":");
+    const 端口 = 拆分地址端口.length > 1 ? Number(拆分地址端口.pop()) : 443;
+    const 地址 = 拆分地址端口.join(":");
+    return { 地址, 端口, 节点名字 };
+  });
+}
+
+// 订阅页面
+function v2ray配置文件(hostName) {
+  const 节点列表 = 处理优选列表(优选列表, hostName);
+  const 配置内容 = 节点列表
+    .map(({ 地址, 端口, 节点名字 }) => {
+      return `vless://${验证UUID}@${地址}:${端口}?encryption=none&security=tls&sni=${hostName}&fp=chrome&type=ws&host=${hostName}&path=${encodeURIComponent("/?ed=2560")}#${节点名字}`;
+    })
+    .join("\n");
+
+  return new Response(配置内容, {
+    status: 200,
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+  });
+}
+
+function clash配置文件(hostName) {
+  const 节点列表 = 处理优选列表(优选列表, hostName);
+  const 生成节点 = (节点列表) => {
+    return 节点列表.map(({ 地址, 端口, 节点名字 }) => {
+      return {
+        nodeConfig: `- name: ${节点名字}
+  type: vless
+  server: ${地址}
+  port: ${端口}
+  uuid: ${验证UUID}
+  udp: true
+  tls: true
+  sni: ${hostName}
+  network: ws
+  ws-opts:
+    path: "/?ed=2560"
+    headers:
+      Host: ${hostName}
+      User-Agent: Chrome`,
+        proxyConfig: `    - ${节点名字}`,
+      };
+    });
+  };
+
+  const 节点配置 = 生成节点(节点列表)
+    .map((node) => node.nodeConfig)
+    .join("\n");
+  const 代理配置 = 生成节点(节点列表)
+    .map((node) => node.proxyConfig)
+    .join("\n");
+
+  const 配置内容 = `
+proxies:
+${节点配置}
+
+proxy-groups:
+- name: 海外规则
+  type: select
+  proxies:
+    - 延迟优选
+    - 故障转移
+    - DIRECT
+    - REJECT
+${代理配置}
+- name: 国内规则
+  type: select
+  proxies:
+    - DIRECT
+    - 延迟优选
+    - 故障转移
+    - REJECT
+${代理配置}
+- name: 广告屏蔽
+  type: select
+  proxies:
+    - REJECT
+    - DIRECT
+    - 延迟优选
+    - 故障转移
+${代理配置}
+- name: 延迟优选
+  type: url-test
+  url: https://www.google.com/generate_204
+  interval: 30
+  tolerance: 50
+  proxies:
+${代理配置}
+- name: 故障转移
+  type: fallback
+  url: https://www.google.com/generate_204
+  interval: 30
+  proxies:
+${代理配置}
+
+rules:
+  - GEOSITE,category-ads-all,广告屏蔽
+  - GEOSITE,cn,国内规则
+  - GEOIP,CN,国内规则,no-resolve
+  - MATCH,海外规则
+`;
+
+  return new Response(配置内容, {
+    status: 200,
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+  });
+}
