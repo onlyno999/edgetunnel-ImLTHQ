@@ -13,7 +13,6 @@ let SOCKS5全局代理 = false;
 
 let 反代IP = "ts.hpc.tw";
 
-let NAT64前缀 = "2001:67c:2960:6464::";
 let DOH地址 = "1.1.1.1";
 
 // 网页入口
@@ -25,7 +24,6 @@ export default {
     SOCKS5代理 = env.SOCKS5 ?? SOCKS5代理;
     SOCKS5全局代理 = env.SOCKS5_GLOBAL ?? SOCKS5全局代理;
     反代IP = env.PROXY_IP ?? 反代IP;
-    NAT64前缀 = env.NAT64 ?? NAT64前缀;
     DOH地址 = env.DOH ?? DOH地址;
 
     const url = new URL(访问请求.url);
@@ -91,7 +89,7 @@ function 使用64位加解密(还原混淆字符) {
   return 解密.buffer;
 }
 
-// 第二步，解读VL协议数据，创建TCP握手（直连、SOCKS5、反代、NAT64）
+// 第二步，解读VL协议数据，创建TCP握手（直连、SOCKS5、反代）
 async function 解析VL标头(VL数据, WS接口, TCP接口) {
   if (验证VL的密钥(new Uint8Array(VL数据.slice(1, 17))) !== 验证UUID) {
     return null;
@@ -148,33 +146,7 @@ async function 解析VL标头(VL数据, WS接口, TCP接口) {
           TCP接口 = await 创建SOCKS5接口(识别地址类型, 访问地址, 访问端口);
           await TCP接口.opened;
         } catch {
-          // SOCKS5失败 尝试NAT64
-          try {
-            const NAT64地址 = 识别地址类型 === 1
-              ? 转换IPv4到NAT64(访问地址)
-              : 转换IPv4到NAT64(await 解析域名到IPv4(访问地址));
-            TCP接口 = await connect({ hostname: NAT64地址, port: 访问端口 });
-            await TCP接口.opened;
-          } catch {
-            // NAT64失败 尝试反代
-            let [反代IP地址, 反代IP端口] = 反代IP.split(":");
-            TCP接口 = await connect({
-              hostname: 反代IP地址,
-              port: 反代IP端口 || 443,
-            });
-            await TCP接口.opened;
-          }
-        }
-      } else {
-        // 没有SOCKS5 尝试NAT64
-        try {
-          const NAT64地址 = 识别地址类型 === 1
-            ? 转换IPv4到NAT64(访问地址)
-            : 转换IPv4到NAT64(await 解析域名到IPv4(访问地址));
-          TCP接口 = await connect({ hostname: NAT64地址, port: 访问端口 });
-          await TCP接口.opened;
-        } catch {
-          // NAT64失败 尝试反代
+          // SOCKS5失败 直接尝试反代
           let [反代IP地址, 反代IP端口] = 反代IP.split(":");
           TCP接口 = await connect({
             hostname: 反代IP地址,
@@ -182,24 +154,18 @@ async function 解析VL标头(VL数据, WS接口, TCP接口) {
           });
           await TCP接口.opened;
         }
+      } else {
+        // 没有SOCKS5 直接尝试反代
+        let [反代IP地址, 反代IP端口] = 反代IP.split(":");
+        TCP接口 = await connect({
+          hostname: 反代IP地址,
+          port: 反代IP端口 || 443,
+        });
+        await TCP接口.opened;
       }
     }
   }
   建立传输管道(WS接口, TCP接口, 写入初始数据);
-}
-
-// 将IPv4地址转换为NAT64 IPv6地址
-function 转换IPv4到NAT64(ipv4地址) {
-  const 十六进制 = ipv4地址.split(".").map(段 => (+段).toString(16).padStart(2, "0"));
-  return `[${NAT64前缀}${十六进制[0]}${十六进制[1]}:${十六进制[2]}${十六进制[3]}]`;
-}
-
-// 解析域名到IPv4地址
-async function 解析域名到IPv4(域名) {
-  const { Answer } = await (await fetch(`https://${DOH地址}/dns-query?name=${域名}&type=A`, {
-    headers: { "Accept": "application/dns-json" }
-  })).json();
-  return Answer.find(({ type }) => type === 1).data;
 }
 
 function 验证VL的密钥(arr, offset = 0) {
