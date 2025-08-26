@@ -33,7 +33,7 @@ export default {
     const WS请求 = 读取我的请求标头 == "websocket";
     const 不是WS请求 = 读取我的请求标头?.toLowerCase() !== "websocket";
 
-    // 只允许 /订阅路径/ 开头的路径反代
+    // 只允许 /订阅路径/ 开头的路径反代 无法访问CF CDN
     const 反代前缀 = `/${encodeURIComponent(订阅路径)}/`;
     if (url.pathname.startsWith(反代前缀)) {
       // 取出目标链接
